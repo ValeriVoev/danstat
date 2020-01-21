@@ -6,6 +6,7 @@
 #'
 #' @importFrom httr POST content
 #' @importFrom jsonlite fromJSON
+#' @importFrom readr read_csv2 locale
 #'
 #' @return A data frame
 #' @export
@@ -35,14 +36,17 @@ get_data <- function(table_id, variables, language = c("en", "da")){
 	call_body <- list(table = table_id,
 										lang = language,
 										format = "CSV",
-										delimiter = "Tab",
 										variables = variables)
 
 	result <- httr::POST(DATA_ENDPOINT, body = call_body, encode = "json")
 
 	check_http_type(result, expected_type = "text/csv")
 
-	return(httr::content(result, type = "text/tab-separated-values", encoding = "UTF-8"))
+	return(readr::read_csv2(httr::content(result, type = "text", encoding = "UTF-8"),
+													locale = readr::locale(
+														decimal_mark = ",",
+														tz = "CET"
+													)))
 }
 
 
