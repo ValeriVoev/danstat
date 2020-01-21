@@ -12,8 +12,14 @@ devtools::install_github("ValeriVoev/danstat")
 
 The `danstat` package provides an R interface to Danmarks Statistik
 Statistikbank API to enable an easier access to the wealth of data in
-the data bank for research and the general community. The API has 4
-endpoints which are mimicked by four main functions of the package:
+the data bank for research and the general community. The documentation
+of the API can be found here: [Statistikbank
+API](https://www.dst.dk/en/Statistik/statistikbanken/api).
+
+## Usage
+
+The API has 4 endpoints which are mimicked by four main functions of the
+package:
 
 1.  `get_subjects()` (SUBJECTS endpoint) retrieves information about
     subjects around which the data tables in the data bank are
