@@ -1,4 +1,10 @@
 
+<!-- badges: start -->
+
+[![Travis build
+status](https://travis-ci.org/ValeriVoev/danstat.svg?branch=master)](https://travis-ci.org/ValeriVoev/danstat)
+<!-- badges: end -->
+
 ## Installation
 
 From Github:
