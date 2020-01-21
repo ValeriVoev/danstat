@@ -9,6 +9,21 @@
 #'
 #' @return A data frame
 #' @export
+#' @examples
+#' # Get data from table "folk1c" for selected values of variables "ieland" and "køn"
+#' # and all time periods available.
+#'
+#' # The "ieland" variable is filtered for Denmark (id = 5000) and Bulgaria (id = 5128)
+#' # and the "køn" variable id filtered for Men (id = 1) and Women (id = 2).
+#' # The "tid" variable is unfiltered, i.e. selects all available time periods
+#' # See get_table_metadata(table_id = "folk1c", variables_only = TRUE) for variable codes and values.
+#'
+#' variables <- list(list(code = "ieland", values = c(5100, 5128)),
+#'                   list(code = "køn", values = c(1,2)),
+#'                   list(code = "tid", values = NA))
+#'
+#' data <- get_data("folk1c", variables)
+
 
 get_data <- function(table_id, variables, language = c("en", "da")){
 

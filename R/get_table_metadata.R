@@ -6,6 +6,12 @@
 #'
 #' @return A list with information about the table, like documentation url, variable description, etc. If \code{variables_only = TRUE}, returns a data frame with variable information.
 #' @export
+#' @examples
+#' # Get table metadata for a given table
+#' table_meta <- get_table_metadata(table_id = "folk1c") # a list
+#'
+#' # Get only information about the variables in the table
+#' table_meta_vars <- get_table_metadata(table_id = "folk1c", variables_only = TRUE) # a data frame
 
 
 get_table_metadata <- function(table_id, language = c("en", "da"), variables_only = FALSE){

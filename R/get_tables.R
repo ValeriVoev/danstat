@@ -9,6 +9,15 @@
 #'
 #' @return A data frame
 #' @export
+#' @examples
+#' # Get all tables
+#' all_tables <- get_tables()
+#'
+#' # Or get tables for specific subjects
+#' some_tables <- get_tables(subjects = c("02", "2419"))
+#'
+#' # Get all tables updated within the past 3 days
+#' tables_past3days <- get_tables(pastdays = 3)
 
 
 # TODO: Consider implementing a search_term or regex to do a lookup in the "text" column which is a kind of description

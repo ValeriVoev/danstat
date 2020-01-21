@@ -19,3 +19,10 @@ A list with information about the table, like documentation url, variable descri
 \description{
 Title
 }
+\examples{
+# Get table metadata for a given table
+table_meta <- get_table_metadata(table_id = "folk1c") # a list
+
+# Get only information about the variables in the table
+table_meta_vars <- get_table_metadata(table_id = "folk1c", variables_only = TRUE) # a data frame
+}

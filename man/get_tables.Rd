@@ -26,3 +26,13 @@ A data frame
 \description{
 Get a list of stables in the data bank
 }
+\examples{
+# Get all tables
+all_tables <- get_tables()
+
+# Or get tables for specific subjects
+some_tables <- get_tables(subjects = c("02", "2419"))
+
+# Get all tables updated within the past 3 days
+tables_past3days <- get_tables(pastdays = 3)
+}

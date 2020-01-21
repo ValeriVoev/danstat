@@ -10,6 +10,16 @@
 #'
 #' @return A data frame
 #' @export
+#' @examples
+#' # Get all subjects
+#' all_subjects <- get_subjects()
+#'
+#' # Or get (sub)subjects for specific subjects
+#' some_subjects <- get_subjects(subjects = c("02", "2419"))
+#'
+#' # Get all subject hierarchy for a given subject
+#' subject_with_hierarchy <- get_subjects(subjects = "02", recursive = TRUE)
+
 
 get_subjects <- function(language = c("en", "da"), recursive = FALSE, include_tables = FALSE, subjects = NULL){
 
