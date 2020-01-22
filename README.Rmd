@@ -49,3 +49,11 @@ get_table_metadata(table_id = "folk1c", variables_only = TRUE) %>%
 	select(id, text)
 ```
 we can see that "Område" translates to "region", "Køn" to "sex", "Alder" to "age", etc. "Indhold" is always the "value" column whenever data is returned with the `get_data` function.
+
+## See also
+There are (as far as I know) two other packages with similar functionality:
+
+* https://github.com/rOpenGov/dkstat
+* https://github.com/mikkelkrogsholm/statsDK
+
+In the packages above, the API is called with a `GET` request, while `POST` is the prefrerred option of the API developers and is also what is used in this package. Also, I think that using `POST` requests makes the package code more readable compared to the long url-encoded queries needed for `GET` requests. Also, as of this moment, the rOpenGov package seems to not have been maintained for the past 3 years. In any case, users can consider the above 2 packages as alternatives to this one. 
