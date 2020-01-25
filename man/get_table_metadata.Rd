@@ -4,14 +4,14 @@
 \alias{get_table_metadata}
 \title{Title}
 \usage{
-get_table_metadata(table_id, language = c("en", "da"), variables_only = FALSE)
+get_table_metadata(table_id, variables_only = FALSE, language = c("en", "da"))
 }
 \arguments{
 \item{table_id}{Table identifier, e.g. "folk1a"}
 
-\item{language}{Language for the return object. Default = \code{"en"}}
-
 \item{variables_only}{If \code{TRUE} returns only information about the variables in the table}
+
+\item{language}{Language for the return object. Default = \code{"en"}}
 }
 \value{
 A list with information about the table, like documentation url, variable description, etc. If \code{variables_only = TRUE}, returns a data frame with variable information.

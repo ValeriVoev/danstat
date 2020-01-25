@@ -1,9 +1,10 @@
 #' Get a list of subjects covered in the data bank
 #'
-#' @param language Language for the return object. Default = \code{"en"}
+#' @param subjects Provide specific subject id's to get subtopics. E.g. \code{subjects = c("02", "2419")}
 #' @param recursive Whether subtopics/tables will be retrieved all the way down the hierarchy. Otherwise, only the closest level under the provided subjects will be retrieved. Default = \code{FALSE}
 #' @param include_tables Whether the result should contain tables. Otherwise, only subjects are returned. Default = \code{FALSE}
-#' @param subjects Provide specific subject id's to get subtopics. E.g. \code{subjects = c("02", "2419")}
+#' @param language Language for the return object. Default = \code{"en"}
+#'
 #'
 #' @importFrom httr POST content
 #' @importFrom jsonlite fromJSON
@@ -21,7 +22,7 @@
 #' subject_with_hierarchy <- get_subjects(subjects = "02", recursive = TRUE)
 
 
-get_subjects <- function(language = c("en", "da"), recursive = FALSE, include_tables = FALSE, subjects = NULL){
+get_subjects <- function(subjects = NULL, recursive = FALSE, include_tables = FALSE, language = c("en", "da")){
 
 	# evaluate language choices
 	language <- match.arg(language)

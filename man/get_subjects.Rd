@@ -5,20 +5,20 @@
 \title{Get a list of subjects covered in the data bank}
 \usage{
 get_subjects(
-  language = c("en", "da"),
+  subjects = NULL,
   recursive = FALSE,
   include_tables = FALSE,
-  subjects = NULL
+  language = c("en", "da")
 )
 }
 \arguments{
-\item{language}{Language for the return object. Default = \code{"en"}}
+\item{subjects}{Provide specific subject id's to get subtopics. E.g. \code{subjects = c("02", "2419")}}
 
 \item{recursive}{Whether subtopics/tables will be retrieved all the way down the hierarchy. Otherwise, only the closest level under the provided subjects will be retrieved. Default = \code{FALSE}}
 
 \item{include_tables}{Whether the result should contain tables. Otherwise, only subjects are returned. Default = \code{FALSE}}
 
-\item{subjects}{Provide specific subject id's to get subtopics. E.g. \code{subjects = c("02", "2419")}}
+\item{language}{Language for the return object. Default = \code{"en"}}
 }
 \value{
 A data frame

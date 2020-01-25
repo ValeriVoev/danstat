@@ -16,4 +16,11 @@ Imports:
     jsonlite,
     readr
 Suggests: 
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown,
+    purrr,
+    dplyr,
+    ggplot2,
+    kableExtra
+VignetteBuilder: knitr

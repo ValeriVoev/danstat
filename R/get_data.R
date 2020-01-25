@@ -2,6 +2,7 @@
 #'
 #' @param table_id Table identifier, e.g. "folk1a"
 #' @param variables A list with variable code-values pairs. Each code-values pair should be a named list with names "code" and "values".
+#' If all values for a variable are desired, define \code{values = NA} for that variable code.
 #' @param language Language for the return object. Default = \code{"en"}
 #'
 #' @importFrom httr POST content

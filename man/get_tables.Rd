@@ -5,20 +5,20 @@
 \title{Get a list of stables in the data bank}
 \usage{
 get_tables(
-  language = c("en", "da"),
   subjects = NULL,
   pastdays = NA_integer_,
-  include_inactive = FALSE
+  include_inactive = FALSE,
+  language = c("en", "da")
 )
 }
 \arguments{
-\item{language}{Language for the return object. Default = \code{"en"}}
-
 \item{subjects}{Provide specific subject id's to get subtopics. E.g. \code{subjects = c("02", "2419")}. Can be retrieved with \code{get_subjects()}}
 
 \item{pastdays}{Return only tables which have been updated within this number of days}
 
 \item{include_inactive}{Whether to return tables that are no longer updated}
+
+\item{language}{Language for the return object. Default = \code{"en"}}
 }
 \value{
 A data frame

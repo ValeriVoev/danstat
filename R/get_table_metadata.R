@@ -1,8 +1,8 @@
 #' Title
 #'
 #' @param table_id Table identifier, e.g. "folk1a"
-#' @param language Language for the return object. Default = \code{"en"}
 #' @param variables_only If \code{TRUE} returns only information about the variables in the table
+#' @param language Language for the return object. Default = \code{"en"}
 #'
 #' @return A list with information about the table, like documentation url, variable description, etc. If \code{variables_only = TRUE}, returns a data frame with variable information.
 #' @export
@@ -14,7 +14,7 @@
 #' table_meta_vars <- get_table_metadata(table_id = "folk1c", variables_only = TRUE) # a data frame
 
 
-get_table_metadata <- function(table_id, language = c("en", "da"), variables_only = FALSE){
+get_table_metadata <- function(table_id, variables_only = FALSE, language = c("en", "da")){
 
 	# evaluate language choices
 	language <- match.arg(language)

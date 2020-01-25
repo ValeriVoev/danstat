@@ -9,7 +9,8 @@ get_data(table_id, variables, language = c("en", "da"))
 \arguments{
 \item{table_id}{Table identifier, e.g. "folk1a"}
 
-\item{variables}{A list with variable code-values pairs. Each code-values pair should be a named list with names "code" and "values".}
+\item{variables}{A list with variable code-values pairs. Each code-values pair should be a named list with names "code" and "values".
+If all values for a variable are desired, define \code{values = NA} for that variable code.}
 
 \item{language}{Language for the return object. Default = \code{"en"}}
 }

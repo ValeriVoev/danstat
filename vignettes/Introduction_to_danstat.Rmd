@@ -1,0 +1,179 @@
+---
+title: "Introduction to danstat"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction_to_danstat}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.width = 10,
+  fig.height = 5,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+This vignette introduces the `danstat` package by means of a simple use case to illustrate the data discovery process. The package is designed to give easy and intuitive access to the Danmarks Statistik (Statistics Denmark) Statistikbank API which allows access to all published data in StatBank. As a public institution, Statistics Denmark provides open access to the data, so the API doesn't require authentication and has no rate limits. The data is free to re-use and reproduce even for commercial use, however, source accreditation to Statistics Denmark should be given. See terms for the [Use and reuse of data](https://www.dst.dk/en/OmDS/omweb).
+
+```{r setup}
+library(danstat)
+library(purrr)
+library(dplyr)
+library(ggplot2)
+library(kableExtra)
+```
+
+## Exploring a subject
+
+In this example we would like to examine alcohol related incidents and the consumption of alcohol in Denmark. An inital call to `get_subjects()` returns the following data frame:
+
+```{r}
+get_subjects()
+```
+The subjects of interest for us are "Living conditions" and "Prices and consumption". We look into more details into these to subjects:
+```{r}
+subj <- get_subjects(subjects = c("05","06"))
+subsubjects <- subj$subjects %>% bind_rows()
+subsubjects
+```
+
+## Getting table information and variables
+
+Now we would like to see what data tables are available for subjects "Traffic accidents" and "Consumption":
+```{r}
+tables <- get_tables(subjects = c("2413", "2438")) 
+tables %>% 
+  select(id, text, variables) %>% 
+  kable()
+```
+
+If we would like to examine number of traffic accidents by hour of day (which is an interesing question in itself) we can choose table "UHELD4". To extract sales and consumption of alcohol, we will use table "ALKO3". We can now look into the variable codes and values for these 2 tables and determine if we should filter any values.
+```{r}
+vars_acc <- get_table_metadata(table_id = "uheld4", variables_only = TRUE)
+vars_alco <- get_table_metadata(table_id = "alko3", variables_only = TRUE)
+
+vars_acc %>% 
+  select(id, text)
+
+vars_alco %>% 
+  select(id, text)
+```
+
+Let us look a bit into the values for the "UHELDA" (type of accident) variable from table "UHELD4" and the "TYPE" variable from table "ALKO3" to determine what the possible values of these are.
+```{r}
+vars_acc$values[1] %>% 
+  kable()
+
+vars_alco$values[1] %>% 
+  kable()
+```
+
+To compare the diurnal patterns of alcohol-related accidents vs. other accidents we will select values `c(1000, 2000)` from the "UHELDA" variable and values `c("09", "055")` (sales and consumption of lager equivalents) from the "TYPE" variable. As we would like data for all time periods ("Tid") we will leave the values for that variable as `NA`. 
+
+## Pulling data from the API
+
+We can now pull the needed data from the API - first the accident numbers:
+```{r}
+variable_codes <- vars_acc$id[c(1, 3, 6)] # UHELDA, KLOK and Tid
+variable_values <- list(c(1000, 2000), NA, NA) # all values for KLOK and Tid
+
+# Construct the variable_input as a list of code-values pairs
+variable_input <- purrr::map2(.x = variable_codes, .y = variable_values, .f = ~list(code = .x, values = .y))
+
+# Get data 
+accidents <- get_data("uheld4", variables = variable_input)
+head(accidents) %>% kable()
+```
+
+and then the alcohol sales and consumption values:
+```{r}
+variable_codes <- vars_alco$id 
+variable_values <- list(c("055", "09"), NA) # All values for Tid
+
+# Construct the variable_input as a list of code-values pairs
+variable_input <- purrr::map2(.x = variable_codes, .y = variable_values, .f = ~list(code = .x, values = .y))
+
+# Get data 
+alcohol <- get_data("alko3", variables = variable_input)
+alcohol %>% 
+  filter(INDHOLD != "..") %>% # the API returns ".." as missing values
+  head() %>% 
+  kable()
+```
+
+## Analysis 1: Duirnal patterns of traffic accidents
+
+An interesting analysis would be to see at which time of day most accidents occur:
+```{r out.width = '100%'}
+accidents_by_hour <- accidents %>%
+	filter(KLOK != "Not stated") %>%
+	group_by(UHELDA, KLOK) %>%
+	summarise(mean_accidents = mean(INDHOLD, na.rm = TRUE))
+
+accidents_by_hour %>%
+	ggplot(aes(x = KLOK, y = mean_accidents, color = UHELDA, group = UHELDA)) +
+	geom_line() +
+	geom_point() +
+	theme_bw() + 
+  theme(legend.position="top") +
+  labs(x = "Time of day", y = "Average annual accidents")
+```
+
+A pattern is quite clear: non-alcohol related accidents peak during commute hours in the morning and the afternoon, while alcohol related accidents are highest and almost equally likely between 6pm and 3am. It is important to note here that the values on the y-axis are total annual accidents for the average year between 1997 and 2018. So a value of e.g. 50, means that of all accidents in an average year 50, occurred in a given hour (summed over all days in the year) - so these are **not** average hourly accidents.
+
+## Analysis 2: Alcohol sales and alcohol-related accidents
+
+First, we summarize the accidents dataset and check the length of the series in both datasets
+```{r}
+accidents_by_year <- accidents %>% 
+  group_by(UHELDA, TID) %>% 
+  summarize(INDHOLD = sum(INDHOLD)) %>% 
+  ungroup()
+
+accidents_by_year %>%
+  group_by(UHELDA) %>% 
+  summarise(min(TID), max(TID))
+
+alcohol_by_year <- alcohol %>% 
+  filter(INDHOLD != "..") %>% # the API returns ".." as missing values
+  mutate(INDHOLD = as.numeric(INDHOLD))
+
+alcohol_by_year %>%
+  group_by(TYPE) %>% 
+  summarise(min(TID), max(TID))
+```
+
+Since alcohol consumption is only available up to 2010, we will use alcohol sales as a proxy. Also, as the alcohol consumption is indexed with year 2000 as index 100, we transoform the accidents values in the same way.
+
+```{r out.width = '100%'}
+
+alcohol_data <- alcohol_by_year %>% 
+  filter(between(TID, 1997, 2018),
+         grepl("sales", TYPE, ignore.case = TRUE)) %>% 
+  select(year = TID,
+         alcohol_sales = INDHOLD)
+
+accidents_data <- accidents_by_year %>% 
+  filter(grepl("alcohol", UHELDA, ignore.case = TRUE)) %>% 
+  select(year = TID,
+         alcohol_accidents = INDHOLD)
+
+accidents_2000 <- accidents_data %>% 
+  filter(year == 2000) %>% 
+  pull(alcohol_accidents)
+  
+accidents_data$alcohol_accidents <- round((accidents_data$alcohol_accidents/accidents_2000)*100)
+
+data <- inner_join(alcohol_data, accidents_data, by = "year") %>% 
+  mutate(risk_index = round(alcohol_accidents/alcohol_sales*100))
+
+data %>% 
+  ggplot(aes(x=year, y=risk_index)) +
+  geom_col()
+```
+As this vignette does not by any means aspire to the standards of rigourous academic research, we can only say here that there seems to be an **indication** that the risk of alcohol-related accidents has dropped substantially since 2000. Sales of alcohol might be a poor proxy for consumption, patterns of cross-border purchase of alcohol may have changed over the past 20 years, cars have definitely become safer over time, etc. Disentangling these effects is well beyond the scope of this article.
