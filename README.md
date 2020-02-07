@@ -3,9 +3,20 @@
 
 [![Travis build
 status](https://travis-ci.org/ValeriVoev/danstat.svg?branch=master)](https://travis-ci.org/ValeriVoev/danstat)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/danstat)](https://CRAN.R-project.org/package=danstat)
+![Since when](https://www.r-pkg.org/badges/ago/danstat)
+<!-- ![Downloads](https://cranlogs.r-pkg.org/badges/danstat) -->
+<!-- ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/danstat) -->
 <!-- badges: end -->
 
 ## Installation
+
+From CRAN:
+
+``` r
+install.packages("danstat")
+```
 
 From Github:
 
