@@ -15,7 +15,7 @@
 #' all_tables <- get_tables()
 #'
 #' # Or get tables for specific subjects
-#' some_tables <- get_tables(subjects = c("02", "2419"))
+#' some_tables <- get_tables(subjects = c("2", "3413"))
 #'
 #' # Get all tables updated within the past 3 days
 #' tables_past3days <- get_tables(pastdays = 3)
@@ -30,7 +30,7 @@ get_tables <- function(subjects = NULL, pastdays = NA_integer_, include_inactive
 	stopifnot(is.numeric(pastdays))
 
 	# Treat objects "as is"
-	if (!is.null(subjects)) subjects <- I(subjects)
+	#if (!is.null(subjects)) subjects <- I(subjects)
 
 	call_body <- list(lang = language,
 										subjects = subjects,
