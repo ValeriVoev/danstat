@@ -5,7 +5,7 @@ Version: 0.2.0
 Author: Valeri Voev
 Maintainer: Valeri Voev <v_voev@yahoo.com>
 Description: The purpose of the package is to enable an R function interface into the Statistics Denmark Databank API mainly for research purposes. 
-    The Statistics Denmark Databank API has four endpoints, see here for more information and testing the API in their console: <https://www.dst.dk/en/Statistik/statistikbanken/api>.
+    The Statistics Denmark Databank API has four endpoints, see here for more information and testing the API in their console: <https://www.dst.dk/en/Statistik/brug-statistikken/muligheder-i-statistikbanken/api>.
     This package mimics the structure of the API and provides four main functions to match the functionality of the API endpoints.
 License: MIT + file LICENSE
 Encoding: UTF-8

@@ -30,7 +30,7 @@ get_tables <- function(subjects = NULL, pastdays = NA_integer_, include_inactive
 	stopifnot(is.numeric(pastdays))
 
 	# Treat objects "as is"
-	#if (!is.null(subjects)) subjects <- I(subjects)
+	if (!is.null(subjects)) subjects <- I(subjects)
 
 	call_body <- list(lang = language,
 										subjects = subjects,
