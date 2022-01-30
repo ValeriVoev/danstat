@@ -35,24 +35,24 @@ In this example we would like to examine alcohol related incidents and the consu
 ```{r}
 get_subjects()
 ```
-The subjects of interest for us are "Living conditions" and "Prices and consumption". We look into more details into these to subjects:
+The subjects of interest for us are "Business" and "Transport". We look into more details into these to subjects:
 ```{r}
-subj <- get_subjects(subjects = c("05","06"))
+subj <- get_subjects(subjects = c("6","7"))
 subsubjects <- subj$subjects %>% bind_rows()
 subsubjects
 ```
 
 ## Getting table information and variables
 
-Now we would like to see what data tables are available for subjects "Traffic accidents" and "Consumption":
+Now we would like to see what data tables are available for subjects "Distributive trades" and "Traffic accidents":
 ```{r}
-tables <- get_tables(subjects = c("2413", "2438")) 
+tables <- get_tables(subjects = c("3465", "3413")) 
 tables %>% 
   select(id, text, variables) %>% 
   kable()
 ```
 
-If we would like to examine number of traffic accidents by hour of day (which is an interesing question in itself) we can choose table "UHELD4". To extract sales and consumption of alcohol, we will use table "ALKO3". We can now look into the variable codes and values for these 2 tables and determine if we should filter any values.
+If we would like to examine number of traffic accidents by hour of day (which is an interesting question in itself) we can choose table "UHELD4". To extract sales and consumption of alcohol, we will use table "ALKO3". We can now look into the variable codes and values for these 2 tables and determine if we should filter any values.
 ```{r}
 vars_acc <- get_table_metadata(table_id = "uheld4", variables_only = TRUE)
 vars_alco <- get_table_metadata(table_id = "alko3", variables_only = TRUE)
@@ -124,7 +124,7 @@ accidents_by_hour %>%
   labs(x = "Time of day", y = "Average annual accidents")
 ```
 
-A pattern is quite clear: non-alcohol related accidents peak during commute hours in the morning and the afternoon, while alcohol related accidents are highest and almost equally likely between 6pm and 3am. It is important to note here that the values on the y-axis are total annual accidents for the average year between 1997 and 2018. So a value of e.g. 50, means that of all accidents in an average year 50, occurred in a given hour (summed over all days in the year) - so these are **not** average hourly accidents.
+A pattern is quite clear: non-alcohol related accidents peak during commute hours in the morning and the afternoon, while alcohol related accidents are highest and almost equally likely between 6pm and 3am. It is important to note here that the values on the y-axis are total annual accidents for the average year between 1997 and 2018. So a value of e.g. 50, means that of all accidents in an average year 50 occurred in a given hour (summed over all days in the year) - so these are **not** average hourly accidents.
 
 ## Analysis 2: Alcohol sales and alcohol-related accidents
 
@@ -153,7 +153,7 @@ Since alcohol consumption is only available up to 2010, we will use alcohol sale
 ```{r out.width = '100%'}
 
 alcohol_data <- alcohol_by_year %>% 
-  filter(between(TID, 1997, 2018),
+  filter(between(TID, 1997, 2021),
          grepl("sales", TYPE, ignore.case = TRUE)) %>% 
   select(year = TID,
          alcohol_sales = INDHOLD)

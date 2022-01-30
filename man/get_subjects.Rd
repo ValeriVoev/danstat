@@ -31,8 +31,8 @@ Get a list of subjects covered in the data bank
 all_subjects <- get_subjects()
 
 # Or get (sub)subjects for specific subjects
-some_subjects <- get_subjects(subjects = c("02", "2419"))
+some_subjects <- get_subjects(subjects = c("2", "3"))
 
 # Get all subject hierarchy for a given subject
-subject_with_hierarchy <- get_subjects(subjects = "02", recursive = TRUE)
+subject_with_hierarchy <- get_subjects(subjects = "2", recursive = TRUE)
 }
